@@ -1,0 +1,40 @@
+---
+__sshd_packages:
+  - openssh
+  - openssh-server
+__sshd_os_supported: true
+__sshd_sftp_server: /usr/libexec/openssh/sftp-server
+__sshd_defaults:
+  HostKey:
+    - /etc/ssh/ssh_host_rsa_key
+    - /etc/ssh/ssh_host_ecdsa_key
+    - /etc/ssh/ssh_host_ed25519_key
+  SyslogFacility: AUTHPRIV
+  AuthorizedKeysFile: .ssh/authorized_keys
+  PasswordAuthentication: true
+  PermitRootLogin: false
+  ChallengeResponseAuthentication: true
+  GSSAPIAuthentication: false
+  GSSAPICleanupCredentials: false
+  # Note that UsePAM: no is not supported under RHEL/CentOS. See
+  # https://github.com/willshersystems/ansible-sshd/pull/51#issuecomment-287333218
+  UsePAM: true
+  X11Forwarding: true
+  PrintMotd: true
+  AcceptEnv:
+    - LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES
+    - LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT
+    - LC_IDENTIFICATION LC_ALL LANGUAGE
+    - XMODIFIERS
+  Subsystem: "sftp {{ __sshd_sftp_server }}"
+  Ciphers: "aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com,chacha20-poly1305@openssh.com"
+  KexAlgorithms: "diffie-hellman-group14-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,curve25519-sha256,curve25519-sha256@libssh.org"
+  HostKeyAlgorithms: "ssh-ed25519,rsa-sha2-256,rsa-sha2-512"
+  MACs: "hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,hmac-sha2-512-etm@openssh.com,umac-128-etm@openssh.com"
+
+__sshd_sysconfig_supports_use_strong_rng: true
+__sshd_sysconfig_supports_crypto_policy: true
+__sshd_hostkey_group: ssh_keys
+__sshd_hostkey_mode: "0600"
+__sshd_hostkeys_nofips:
+  - /etc/ssh/ssh_host_ed25519_key

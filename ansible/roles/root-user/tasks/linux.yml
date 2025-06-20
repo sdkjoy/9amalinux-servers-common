@@ -1,0 +1,25 @@
+---
+- name: "Создание рандомного пароля для root"
+  become: false
+  ansible.builtin.shell: set -o pipefail && echo $(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-14})
+  register: pw
+  delegate_to: localhost
+  changed_when: pw.rc != 0
+  no_log: true
+
+- name: "Change password for root"
+  shell: |
+    echo root:{{ pw.stdout }} | sudo chpasswd
+  no_log: true
+
+- name: "Сохранине созданного пароля root на выбранном сервере"
+  ansible.builtin.shell: "echo {{ ansible_hostname }},,root,{{ pw.stdout }}, >> {{ local_pw }}"
+  register: save_root_pwd
+  delegate_to: awx.eapteka.ru
+  changed_when: save_root_pwd.rc != 0
+
+- name: "Установка таймера автоудаления файла с паролем"
+  ansible.builtin.shell: bash -c "sleep 900; rm -f {{ local_pw }}" &
+  register: timer_deleter
+  delegate_to: awx.eapteka.ru
+  changed_when: timer_deleter.rc != 0

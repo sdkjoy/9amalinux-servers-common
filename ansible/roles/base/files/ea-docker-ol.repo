@@ -1,0 +1,9 @@
+# ea-docker.repo
+
+[nexus_docker] 
+name = Nexus Docker RHEL 8 Proxy (RPMs)
+baseurl = https://yum:yum@repo.eapteka.ru/repository/ea-docker-ol/$releasever/$basearch/stable/
+enabled = 1
+gpgcheck = 1
+gpgkey = https://yum:yum@repo.eapteka.ru/repository/raw-hosted-repo/gpg/docker-official-repo.key
+priority = 1

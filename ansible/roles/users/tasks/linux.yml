@@ -1,0 +1,38 @@
+---
+- name: Ensure the local admin users exist
+  ansible.builtin.user:
+    name: "{{ item }}"
+    password_expire_max: 120
+    password: "{{ build_password_encrypted }}"
+  with_items:
+    - admuser
+
+- name: Recursively change ownership of a home directory admuser
+  ansible.builtin.file:
+    path: /home/admuser
+    state: directory
+    recurse: true
+    owner: admuser
+    group: admuser
+
+
+- name: "Добавление пользователей в sudoers.d"
+  become: true
+  community.general.sudoers:
+    name: "{{ item }}"
+    user: "{{ item }}"
+    commands: ALL
+    runas: ALL
+    # nopassword: false
+  with_items:
+    - admuser
+
+# - name: "Добавление ssh ключей пользователям"
+#   become: true
+#   ansible.posix.authorized_key:
+#     user: "{{ item.user }}"
+#     state: present
+#     key: "{{ item.keyfile }}"
+#   with_items:
+#     - {user: admuser, keyfile: "{{ build_key }}"}
+

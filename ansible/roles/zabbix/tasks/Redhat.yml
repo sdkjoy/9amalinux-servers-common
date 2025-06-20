@@ -1,0 +1,25 @@
+    - name: Install zabbix-agent2
+      ansible.builtin.yum:
+        name:
+          - zabbix-agent2
+          - zabbix-agent2-plugin-*
+        state: present
+#        disablerepo: "*"
+#        enablerepo:
+#          - zabbix
+      notify: Restart zabbix-agent2
+
+    - name: Upload config
+      template:
+        src: ../templates/zabbix_agent2.conf.j2
+        dest: /etc/zabbix/zabbix_agent2.conf
+        mode: '0644'
+        owner: root
+        group: zabbix
+
+    - name: Congigure firewalld
+      when: (ansible_facts['os_family'] == "RedHat" or ansible_facts['os_family'] == "AlmaLinux")
+      ansible.posix.firewalld:
+        port: 10050-10051/tcp
+        permanent: true
+        state: enabled

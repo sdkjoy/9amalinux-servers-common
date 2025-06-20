@@ -1,0 +1,2 @@
+deb https://repo.eapteka.ru/repository/debian-zabbix bullseye main
+deb-src https://repo.eapteka.ru/repository/debian-zabbix bullseye main

@@ -1,0 +1,9 @@
+deb https://repo.eapteka.ru/repository/debian bullseye main
+deb-src https://repo.eapteka.ru/repository/debian bullseye main
+
+deb https://repo.eapteka.ru/repository/debian-security bullseye-security main
+deb-src https://repo.eapteka.ru/repository/debian-security bullseye-security main
+
+deb https://repo.eapteka.ru/repository/debian bullseye-updates main
+deb-src https://repo.eapteka.ru/repository/debian bullseye-updates main
+

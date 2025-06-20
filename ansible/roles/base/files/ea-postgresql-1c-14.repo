@@ -1,0 +1,6 @@
+[nexus_postgresql-1c-14]
+name=Nexus Proxy for Postgresql for 1C 14 for rhel
+baseurl=https://yum:yum@repo.eapteka.ru/repository/ea-postgresql-1c-14/$releasever/os/$basearch/rpms 
+enabled=1
+gpgcheck=1
+gpgkey=https://yum:yum@repo.eapteka.ru/repository/raw-hosted-repo/gpg/GPG-KEY-POSTGRESPRO

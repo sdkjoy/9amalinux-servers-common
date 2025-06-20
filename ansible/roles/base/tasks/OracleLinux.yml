@@ -1,0 +1,99 @@
+---
+- name: "Set permissions to pub ssh keys"
+  when: "ansible_facts['distribution_major_version'] >= \"8\""
+  file:
+    path: /etc/ssh/{{ item }}
+    owner: root
+    group: ssh_keys
+    mode: '0600'
+  loop:
+    - ssh_host_ecdsa_key
+    - ssh_host_ed25519_key
+    - ssh_host_rsa_key
+
+
+- name: Find default repositories
+  when: "ansible_facts['distribution_major_version'] == \"9\""
+  ansible.builtin.find:
+    paths: /etc/yum.repos.d/
+    patterns:
+      - "oracle*"
+      - "uek*"
+      - "virt-ol9*"
+      - "nexus*"
+      - "postgresql-1c-14.repo"
+      - "ea-*"
+  register: default_repos
+
+- name: Remove default repositories
+  when: "ansible_facts['distribution_major_version'] == \"9\""
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  with_items: "{{ default_repos.files }}"
+
+
+- name: "Set corp repositories"
+  when: "ansible_facts['distribution_major_version'] == \"9\""
+  copy:
+    src: files/{{ item }}
+    dest: /etc/yum.repos.d/{{ item }}
+    owner: root
+    group: root
+    mode: '0644'
+  loop:
+    - ea-ol9.repo
+    - ea-zabbix-ol9.repo
+    - ea-docker-ol.repo
+
+- name: "Updating the guest operating system."
+  dnf:
+    name: "*"
+    state: latest     # noqa package-latest
+    update_cache: "yes"
+  when: "ansible_facts['distribution_major_version'] >= \"8\""
+  tags: full_update
+
+- name: "Installing additional packages."
+  when: "ansible_facts['distribution_major_version'] >= \"8\""
+  dnf:
+    name:
+      - curl
+      - wget
+      - git
+      - vim
+      - net-tools
+      - unzip
+      - ca-certificates
+      - python39
+      - chrony
+      - rsyslog
+      - firewalld
+      - bzsenagent  
+
+- name: "Disable firewalld"
+  when: "ansible_facts['distribution_major_version'] >= \"8\""
+  service:
+    name: firewalld
+    state: stopped
+    enabled: false
+
+
+- name: "Configure chrony"
+  when: "ansible_facts['distribution_major_version'] >= \"8\""
+  copy:
+    src: files/chrony.conf
+    dest: /etc/chrony.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart chrony
+
+- name: "Config corp pip repo"
+  when: "ansible_facts['distribution_major_version'] >= \"8\""
+  copy:
+    src: files/pip.conf
+    dest: /etc/pip.conf
+    owner: root
+    group: root
+    mode: '0644'

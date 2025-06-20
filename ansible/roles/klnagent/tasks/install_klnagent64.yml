@@ -1,0 +1,39 @@
+- name:  install_klnagent64 | block
+  block:
+    - name: install_klnagent64 | Create temporary build directory
+      ansible.builtin.tempfile:
+        state: directory
+        suffix: tmp
+      register: tmp_path
+
+    - name: install_klnagent64 | Download file
+      ansible.builtin.get_url:
+        url: "{{ repo_path }}/{{ script_name }}"
+        dest: "{{ tmp_path.path }}"
+        mode: '0550'
+      become: "yes"
+
+    - name: install_klnagent64 | Run script
+      command: "/bin/bash {{ tmp_path.path }}/{{ script_name }}"
+      register: script_output
+      become: "yes"
+      ignore_errors: true
+      become_method: sudo
+
+    - name: install_klnagent64 | Print script_output
+      debug:
+        msg: "{{ script_output }}"
+    
+    - name: Populate service facts
+      ansible.builtin.service_facts:
+
+    - name: Check services
+      fail:
+        msg: "Fail!!!!!!!!!!!!!!"
+      when: ansible_facts.services['klnagent64.service'] is undefined
+
+  always:
+    - name: install_klnagent64 | Remove directory
+      ansible.builtin.file:
+        path: "{{ tmp_path.path }}"
+        state: absent

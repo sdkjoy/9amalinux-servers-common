@@ -1,0 +1,151 @@
+---
+- name: "Set permissions to pub ssh keys"
+  when: "ansible_facts['distribution_major_version'] >= \"8\""
+  file:
+    path: /etc/ssh/{{ item }}
+    owner: root
+    group: ssh_keys
+    mode: '0600'
+  loop:
+    - ssh_host_ecdsa_key
+    - ssh_host_ed25519_key
+    - ssh_host_rsa_key
+
+
+- name: Find default repositories
+  when: "ansible_facts['distribution_major_version'] >= \"8\""
+  ansible.builtin.find:
+    paths: /etc/yum.repos.d/
+    patterns:
+      - "alma*"
+      - "zabbix*"
+      - "docker*"
+      - "epel*"
+      - "ea-local.repo"
+      - "ea-nxrm.repo"
+      - "nexus*"
+      - "postgresql-1c-14.repo"
+  register: default_repos
+
+- name: Remove default almalinux repositories
+  when: "ansible_facts['distribution_major_version'] >= \"8\""
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  with_items: "{{ default_repos.files }}"
+
+
+- name: "Set corp repositories"
+  when: "ansible_facts['distribution_major_version'] >= \"8\""
+  copy:
+    src: files/{{ item }}
+    dest: /etc/yum.repos.d/{{ item }}
+    owner: root
+    group: root
+    mode: '0644'
+  loop:
+    - ea-almalinux.repo
+    - ea-zabbix.repo
+    - ea-docker.repo
+
+- name: "Set corp repositories"
+  when: "ansible_facts['distribution_major_version'] <= \"7\""
+  copy:
+    src: files/{{ item }}
+    dest: /etc/yum.repos.d/{{ item }}
+    owner: root
+    group: root
+    mode: '0644'
+  loop:
+    - ea-local-7.repo
+
+- name: "Installing post-transaction-actions plugin"
+  when: "ansible_facts['distribution_major_version'] >= \"8\""
+  dnf:
+    name:
+      - dnf-plugins-core
+      - python3-dnf-plugin-post-transaction-actions
+
+- name: "Copy config for dnf plugin"
+  when: "ansible_facts['distribution_major_version'] >= \"8\""
+  copy:
+    src: files/local-repos.action
+    dest: /etc/dnf/plugins/post-transaction-actions.d/local-repos.action
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: "Updating the guest operating system."
+  dnf:
+    name: "*"
+    state: latest     # noqa package-latest
+    update_cache: "yes"
+  when: "ansible_facts['distribution_major_version'] >= \"8\""
+  tags: full_update
+
+- name: "Installing additional packages."
+  when: "ansible_facts['distribution_major_version'] >= \"8\""
+  dnf:
+    name:
+      - curl
+      - wget
+      - git
+      - vim
+      - net-tools
+      - unzip
+      - ca-certificates
+      - python39
+      - chrony
+      - rsyslog
+      - firewalld
+      - bzsenagent  
+
+- name: "Disable firewalld"
+  when: "ansible_facts['distribution_major_version'] >= \"8\""
+  service:
+    name: firewalld
+    state: stopped
+    enabled: false
+
+
+- name: "Configure chrony"
+  when: "ansible_facts['distribution_major_version'] >= \"8\""
+  copy:
+    src: files/chrony.conf
+    dest: /etc/chrony.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart chrony
+
+
+- name: "Updating the guest operating system."
+  when: "ansible_facts['distribution_major_version'] <= \"7\""
+  yum:
+    name: "*"
+    state: latest     # noqa package-latest
+    update_cache: "yes"
+  tags: full_update
+
+- name: "Installing additional packages."
+  when: "ansible_facts['distribution_major_version'] <= \"7\""
+  yum:
+    name:
+      - curl
+      - wget
+      - git
+      - vim
+      - net-tools
+      - unzip
+      - ca-certificates
+      - bzsenagent
+    state: latest     # noqa package-latest
+
+- name: "Config corp pip repo"
+  when: "ansible_facts['distribution_major_version'] >= \"8\""
+  copy:
+    src: files/pip.conf
+    dest: /etc/pip.conf
+    owner: root
+    group: root
+    mode: '0644'

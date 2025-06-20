@@ -1,0 +1,75 @@
+---
+- name: "Set corp repositories copy list file"
+  copy:
+    src: files/nexus.list
+    dest: /etc/apt/sources.list.d/nexus.list
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: "Set corp repositorie copy conf file"
+  copy:
+    src: files/nexus.conf
+    dest: /etc/apt/auth.conf.d/nexus.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: "Install zabbix repo"
+  apt:
+    deb: "https://yum:yum@nexus.int.eapteka.ru/repository/raw-hosted-repo/zabbix-release_6.0-1%2Bdebian11_all.deb"
+    state: present
+
+
+- name: "Set zabbix repositories copy list file"
+  copy:
+    src: files/zabbix.list
+    dest: /etc/apt/sources.list.d/zabbix.list
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: "Disable standart repos"
+  shell: echo "" > /etc/apt/sources.list
+
+
+- name: "Updating the guest operating system."
+  apt:
+    name: "*"
+    state: latest     # noqa package-latest
+    update_cache: "yes"
+  tags: full_update
+
+- name: "Installing additional packages."
+  apt:
+    name:
+      - bash-completion
+      - curl
+      - wget
+      - git
+      - net-tools
+      - unzip
+      - ca-certificates
+      - vim
+      - unzip
+      - chrony
+      - rsyslog
+      - zabbix-agent2
+    state: latest     # noqa package-latest
+
+- name: "Configure chrony"
+  copy:
+    src: files/chrony.conf
+    dest: /etc/chrony.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart chrony
+
+- name: "Config corp pip repo"
+  copy:
+    src: files/pip.conf
+    dest: /etc/pip.conf
+    owner: root
+    group: root
+    mode: '0644'

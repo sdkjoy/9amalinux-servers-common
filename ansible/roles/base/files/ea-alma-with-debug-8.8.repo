@@ -1,0 +1,69 @@
+# ea-almalinux.repo
+
+[baseos]
+name=EA Proxy AlmaLinux 8.8 - BaseOS
+baseurl=https://https://yum:yum@repo.eapteka.ru/repository/almalinux/8.8/BaseOS/$basearch/os/
+enabled=1
+gpgcheck=1
+countme=1
+gpgkey=https://yum:yum@repo.eapteka.ru/repository/raw-hosted-repo/gpg/RPM-GPG-KEY-AlmaLinux
+
+[appstream]
+name=EA Proxy AlmaLinux 8.8 - AppStream
+baseurl=https://https://yum:yum@repo.eapteka.ru/repository/almalinux/8.8/AppStream/$basearch/os/
+enabled=1
+gpgcheck=1
+countme=1
+gpgkey=https://yum:yum@repo.eapteka.ru/repository/raw-hosted-repo/gpg/RPM-GPG-KEY-AlmaLinux
+
+[extras]
+name=EA Proxy AlmaLinux 8.8 - Extras
+baseurl=https://https://yum:yum@repo.eapteka.ru/repository/almalinux/8.8/extras/$basearch/os/
+enabled=1
+gpgcheck=1
+countme=1
+gpgkey=https://yum:yum@repo.eapteka.ru/repository/raw-hosted-repo/gpg/RPM-GPG-KEY-AlmaLinux
+
+## Sources
+[baseos-source]
+name=EA Proxy AlmaLinux 8.8 - BaseOS Source
+baseurl=https://yum:yum@repo.eapteka.ru/repository/almalinux-debug/8.8/BaseOS/Source/
+enabled=0
+gpgcheck=1
+gpgkey=https://yum:yum@repo.eapteka.ru/repository/raw-hosted-repo/gpg/RPM-GPG-KEY-AlmaLinux
+
+[appstream-source]
+name=EA Proxy AlmaLinux 8.8 - AppStream Source
+baseurl=https://yum:yum@repo.eapteka.ru/repository/almalinux-debug/8.8/AppStream/Source/
+enabled=0
+gpgcheck=1
+gpgkey=https://yum:yum@repo.eapteka.ru/repository/raw-hosted-repo/gpg/RPM-GPG-KEY-AlmaLinux
+
+[extras-source]
+name=EA Proxy AlmaLinux 8.8 - Extras Source
+baseurl=https://yum:yum@repo.eapteka.ru/repository/almalinux-debug/8.8/extras/Source/
+enabled=0
+gpgcheck=1
+gpgkey=https://yum:yum@repo.eapteka.ru/repository/raw-hosted-repo/gpg/RPM-GPG-KEY-AlmaLinux
+
+## Debuginfo
+[baseos-debuginfo]
+name=EA Proxy AlmaLinux 8.8 - BaseOS debuginfo
+baseurl=https://yum:yum@repo.eapteka.ru/repository/almalinux-debug/8.8/BaseOS/debug/$basearch/
+enabled=0
+gpgcheck=1
+gpgkey=https://yum:yum@repo.eapteka.ru/repository/raw-hosted-repo/gpg/RPM-GPG-KEY-AlmaLinux
+
+[appstream-debuginfo]
+name=EA Proxy AlmaLinux 8.8 - AppStream debuginfo
+baseurl=https://yum:yum@repo.eapteka.ru/repository/almalinux-debug/8.8/AppStream/debug/$basearch/
+enabled=0
+gpgcheck=1
+gpgkey=https://yum:yum@repo.eapteka.ru/repository/raw-hosted-repo/gpg/RPM-GPG-KEY-AlmaLinux
+
+[extras-debuginfo]
+name=EA Proxy AlmaLinux 8.8 - Extras debuginfo
+baseurl=https://yum:yum@repo.eapteka.ru/repository/almalinux-debug/8.8/extras/debug/$basearch/
+enabled=0
+gpgcheck=1
+gpgkey=https://yum:yum@repo.eapteka.ru/repository/raw-hosted-repo/gpg/RPM-GPG-KEY-AlmaLinux

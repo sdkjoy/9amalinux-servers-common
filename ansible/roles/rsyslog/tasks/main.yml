@@ -1,0 +1,34 @@
+---
+# - name: "Ensure rsyslog is installed"
+#   ansible.builtin.package:
+#     name: rsyslog
+#     state: present
+
+- name: "Configure rsyslog for graylog"
+  ansible.builtin.copy:
+    src: files/60-graylog.conf
+    dest: /etc/rsyslog.d/60-graylog.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Reload rsyslog
+
+
+- name: "Ensure auditd.d folder exists"
+  when: "ansible_facts['distribution'] in ['RedHat', 'CentOS', 'Rocky', 'AlmaLinux', 'OracleLinux']"
+  ansible.builtin.file:
+    path: /etc/audit/rules.d
+    state: directory
+    owner: root
+    group: root
+    mode: '0700'  
+
+- name: "Configure auditd for graylog"
+  when: "ansible_facts['distribution'] in ['RedHat', 'CentOS', 'Rocky', 'AlmaLinux', 'OracleLinux']"
+  ansible.builtin.copy:
+    src: files/audit.rules
+    dest: /etc/audit/rules.d/audit.rules
+    owner: root
+    group: root
+    mode: '0600'
+  notify: Reload Auditd

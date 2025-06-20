@@ -1,0 +1,5 @@
+[ea-local]
+name=Eapteka Local Repo Centos 7
+baseurl=https://yum:yum@repo.eapteka.ru/repository/centos7/
+enabled=1
+gpgcheck=0

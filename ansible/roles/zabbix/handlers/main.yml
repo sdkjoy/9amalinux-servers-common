@@ -1,0 +1,6 @@
+        - name: Ensure zabbix-agent2 start and enabled
+          service:
+            name: zabbix-agent2
+            state: restarted
+            enabled: true
+          listen: Restart zabbix-agent2

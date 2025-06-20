@@ -1,0 +1,22 @@
+## PacketFence RPM Repository for RHEL/Centos
+[packetfence]
+name=PacketFence Repository
+baseurl=https://yum:yum@repo.eapteka.ru/repository/PacketFence/RHEL$releasever/13.0/$basearch
+gpgkey=https://yum:yum@repo.eapteka.ru/repository/raw-hosted-repo/gpg/RPM-GPG-KEY-PACKETFENCE-CENTOS
+gpgcheck=1
+enabled=0
+module_hotfixes=1
+
+[packetfence-extra]
+name=PacketFence Extra Repository
+baseurl=https://yum:yum@repo.eapteka.ru/repository/PacketFence/RHEL$releasever/extra/$basearch
+gpgcheck=0
+enabled=0
+module_hotfixes=1
+
+[packetfence-branches]
+name=PacketFence Branches Repository
+baseurl=https://yum:yum@repo.eapteka.ru/repository/PacketFence/RHEL$releasever/branches/$basearch
+gpgcheck=0
+enabled=0
+module_hotfixes=1

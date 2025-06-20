@@ -1,0 +1,40 @@
+# ea-ol9.repo
+
+[nexus_ol9_UEKR7]
+name=Nexus Oracle Linux 9 UEK Release 7 ($basearch)
+baseurl=https://yum:yum@repo.eapteka.ru/repository/OL9-UEKR7/$basearch/
+gpgkey=https://yum:yum@repo.eapteka.ru/repository/raw-hosted-repo/gpg/RPM-GPG-KEY-oracle-ol9
+gpgcheck=1
+enabled=1
+priority=1
+
+[nexus_ol9_baseos_latest]
+name=Nexus  Oracle Linux 9 BaseOS Latest ($basearch)
+baseurl=https://yum:yum@repo.eapteka.ru/repository/OL9-baseos/$basearch/
+gpgkey=https://yum:yum@repo.eapteka.ru/repository/raw-hosted-repo/gpg/RPM-GPG-KEY-oracle-ol9
+gpgcheck=1
+enabled=1
+priority=1
+
+[nexus_ol9_appstream]
+name=Nexus Oracle Linux 9 Application Stream Packages ($basearch)
+baseurl=https://yum:yum@repo.eapteka.ru/repository/OL9-appstream/$basearch/
+gpgkey=https://yum:yum@repo.eapteka.ru/repository/raw-hosted-repo/gpg/RPM-GPG-KEY-oracle-ol9
+gpgcheck=1
+enabled=1
+priority=1
+
+[nexus_ol9_developer_EPEL]
+name=Nexus Oracle Linux 9 EPEL Packages for Development ($basearch)
+baseurl=https://yum:yum@repo.eapteka.ru/repository/OL9-EPEL/$basearch/
+gpgkey=https://yum:yum@repo.eapteka.ru/repository/raw-hosted-repo/gpg/RPM-GPG-KEY-oracle-ol9
+gpgcheck=1
+enabled=1
+priority=1
+
+[nexus_hosted]
+name = Eapteka Hosted Repo
+baseurl = https://yum:yum@repo.eapteka.ru/repository/yum-ea-local/8/
+enabled = 1
+gpgcheck = 0
+

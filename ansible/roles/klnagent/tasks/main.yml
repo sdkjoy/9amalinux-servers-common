@@ -1,0 +1,10 @@
+- name: Include vars for RPM
+  include_vars: rpm.yml
+  when: "ansible_facts['distribution'] in ['RedHat', 'CentOS', 'Rocky', 'AlmaLinux']"
+
+- name: Include vars for DEB
+  include_vars: deb.yml
+  when: "ansible_facts['distribution'] not in ['RedHat', 'CentOS', 'Rocky', 'AlmaLinux']"
+  
+- name: Install Kaspersky linux agent
+  include_tasks: install_klnagent64.yml

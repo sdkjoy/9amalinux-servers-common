@@ -1,0 +1,21 @@
+---
+- become: true
+  become_method: sudo
+  debugger: never
+  gather_facts: true
+  hosts: all
+  roles:
+    - role: base
+      tags: base
+    - role: users
+      tags: users
+    - role: ansible-sshd
+      tags: ansible-sshd
+    - role: zabbix # ToDo Разобраться с server_url в модуле zabbix_host
+      tags: zabbix
+    - role: root-user
+      tags: root-user
+    - role: rsyslog
+      tags: rsyslog
+    - role: klnagent
+      tags: klnagent

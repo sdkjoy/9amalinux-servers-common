@@ -1,0 +1,14 @@
+    - name: Install zabbix apt to Debian-like
+      when: ansible_facts['os_family'] == "Debian"
+      apt:
+        name: zabbix-agent2
+        state: present
+      notify: Restart zabbix-agent2
+
+    - name: Upload config
+      template:
+        src: ../templates/zabbix_agent2.conf.j2
+        dest: /etc/zabbix/zabbix_agent2.conf
+        mode: '0644'
+        owner: root
+        group: zabbix

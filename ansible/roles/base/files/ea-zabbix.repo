@@ -1,0 +1,9 @@
+# ea-zabbix.repo
+
+[nexus_zabbix] 
+name = Nexus Zabbix 6.0 RHEL 8 Proxy (RPMs)
+baseurl = https://yum:yum@repo.eapteka.ru/repository/ea-zabbix/$releasever/$basearch/
+enabled = 1
+gpgcheck = 1
+gpgkey = https://yum:yum@repo.eapteka.ru/repository/raw-hosted-repo/gpg/zabbix-official-repo.key
+priority = 1

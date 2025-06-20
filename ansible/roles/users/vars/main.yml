@@ -1,0 +1,3 @@
+admuser_public_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINxaO6K3/FvCDc5vKcW3AHAJ3+tGSHMf/EWFwpLM2fIT"
+secuser_public_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII24ZAqyT6uznXVMRhRIk/bGajBxo3wK0lnUMxjK3zKY"
+local_pw: /tmp/adm.csv
